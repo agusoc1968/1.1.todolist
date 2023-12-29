@@ -1,47 +1,34 @@
-var Item = /** @class */ (function () {
-    function Item(id, name) {
-        this.id = id;
-        this.name = name;
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var Task = /** @class */ (function () {
+    function Task(description, completed) {
+        if (completed === void 0) { completed = false; }
+        this.description = description;
+        this.completed = completed;
     }
-    return Item;
+    return Task;
 }());
-var CRUD = /** @class */ (function () {
-    function CRUD() {
-        this.items = [];
-        this.nextId = 1;
+//import Task from './task';
+var TaskList = /** @class */ (function () {
+    function TaskList() {
+        this.tasks = [];
     }
-    CRUD.prototype.create = function (name) {
-        var newItem = new Item(this.nextId++, name);
-        this.items.push(newItem);
-        return newItem;
+    TaskList.prototype.addTask = function (description) {
+        this.tasks.push(new Task(description));
     };
-    CRUD.prototype.read = function (id) {
-        if (id) {
-            return this.items.find(function (item) { return item.id === id; });
-        }
-        else {
-            return this.items;
+    TaskList.prototype.completeTask = function (index) {
+        if (index >= 0 && index < this.tasks.length) {
+            this.tasks[index].completed = true;
         }
     };
-    CRUD.prototype.update = function (id, newName) {
-        var itemToUpdate = this.items.find(function (item) { return item.id === id; });
-        if (itemToUpdate) {
-            itemToUpdate.name = newName;
-            return itemToUpdate;
-        }
-        else {
-            return undefined;
+    TaskList.prototype.removeTask = function (index) {
+        if (index >= 0 && index < this.tasks.length) {
+            this.tasks.splice(index, 1);
         }
     };
-    CRUD.prototype.delete = function (id) {
-        var index = this.items.findIndex(function (item) { return item.id === id; });
-        if (index !== -1) {
-            this.items.splice(index, 1);
-            return true;
-        }
-        else {
-            return false;
-        }
+    TaskList.prototype.getTasks = function () {
+        return this.tasks;
     };
-    return CRUD;
+    return TaskList;
 }());
+exports.default = TaskList;

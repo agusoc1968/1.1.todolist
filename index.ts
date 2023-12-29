@@ -1,60 +1,32 @@
-class Item {
-  constructor(public id: number, public name: string) {}
+class Task {
+  constructor(
+    public description: string, 
+    public completed: boolean = false) {}
 }
+//import Task from './task';
 
-class CRUD {
-  private items: Item[] = [];
-  private nextId: number = 1;
+class TaskList {
+  private tasks: Task[] = [];
 
-  create(name: string): Item {
-    const newItem = new Item(this.nextId++, name);
-    this.items.push(newItem);
-    return newItem;
+  addTask(description: string): void {
+    this.tasks.push(new Task(description));
   }
 
-  read(id?: number): Item[] | Item | undefined {
-    if (id) {
-      return this.items.find((item) => item.id === id);
-    } else {
-      return this.items;
+  completeTask(index: number): void {
+    if (index >= 0 && index < this.tasks.length) {
+      this.tasks[index].completed = true;
     }
   }
 
-  update(id: number, newName: string): Item | undefined {
-    const itemToUpdate = this.items.find((item) => item.id === id);
-    if (itemToUpdate) {
-      itemToUpdate.name = newName;
-      return itemToUpdate;
-    } else {
-      return undefined;
+  removeTask(index: number): void {
+    if (index >= 0 && index < this.tasks.length) {
+      this.tasks.splice(index, 1);
     }
   }
 
-  delete(id: number): boolean {
-    const index = this.items.findIndex((item) => item.id === id);
-    if (index !== -1) {
-      this.items.splice(index, 1);
-      return true;
-    } else {
-      return false;
-    }
+  getTasks(): Task[] {
+    return this.tasks;
   }
 }
 
-// Ejemplo de uso
-const crud = new CRUD();
-
-const newItem = crud.create("Item 1");
-console.log("Item creado:", newItem);
-
-const allItems = crud.read();
-console.log("Todos los items:", allItems);
-
-const updatedItem = crud.update(newItem.id, "Item 1 Actualizado");
-console.log("Item actualizado:", updatedItem);
-
-const deleted = crud.delete(newItem.id);
-console.log("Item eliminado:", deleted);
-
-const remainingItems = crud.read();
-console.log("Items restantes:", remainingItems);
+export default TaskList;
